@@ -186,7 +186,7 @@
         }
       }
 
-      class UI {
+      class App {
         static pasvCalc;
 
         static randSpeedOffset;
@@ -380,7 +380,7 @@
 
           // We need to use an arrow function here, otherwise "this"
           // would be undefined inside the function
-          this.timer = setTimeout(() => UI.update(), this.updateMillis);
+          this.timer = setTimeout(() => App.update(), this.updateMillis);
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -408,9 +408,9 @@
   </head>
 
   <body
-    onload="UI.load()"
-    ondblclick="UI.fullscreen()"
-    onhashchange="UI.setup()"
+    onload="App.load()"
+    ondblclick="App.fullscreen()"
+    onhashchange="App.setup()"
   >
     <section class="section">
       <div class="container">

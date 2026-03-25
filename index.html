@@ -336,9 +336,8 @@
 
           document.title = cfg.title;
 
-          document.querySelectorAll(".currency").forEach((element) => {
-            element.textContent = cfg.currency;
-          });
+          for (const elem of document.querySelectorAll(".currency"))
+            elem.textContent = cfg.currency;
 
           this.pasvCalc = new PasvCalc(
             cfg.dtStart,

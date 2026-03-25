@@ -261,7 +261,7 @@
 
         static splitMajorMinor(value) {
           const strValue = value.toFixed(6);
-          return [strValue.substr(0, strValue.length - 4), strValue.substr(-4)];
+          return [strValue.slice(0, -4), strValue.slice(-4)];
         }
         static setMajorMinor(elem, value) {
           const [major, minor] = this.splitMajorMinor(value),

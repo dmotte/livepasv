@@ -46,18 +46,18 @@
           this.gainUnit = this.investMonth * this.yieldMonth;
         }
 
-        // Integer part of the number of years
+        /** Integer part of the number of years */
         getYearsInt(now = new Date()) {
           return now.getFullYear() - this.dtStart.getFullYear();
         }
-        // Integer part of the number of months
+        /** Integer part of the number of months */
         getMonthsInt(now = new Date()) {
           return (
             this.getYearsInt(now) * 12 +
             (now.getMonth() - this.dtStart.getMonth())
           );
         }
-        // Decimal part of the number of months
+        /** Decimal part of the number of months */
         static getMonthsDec(now = new Date()) {
           const dtStartMonth = new Date(now.getFullYear(), now.getMonth()),
             dtEndMonth = new Date(now.getFullYear(), now.getMonth() + 1);
@@ -68,16 +68,16 @@
           return millisMonth / millisMonthTotal;
         }
 
-        // Amount of invested money
+        /** Amount of invested money */
         getInvested(monthsInt) {
           return this.investMonth * monthsInt;
         }
 
-        // Monthly earning speed
+        /** Monthly earning speed */
         getSpeedMonth(invested) {
           return invested * this.yieldMonth;
         }
-        // All the earning speed values. Note: we assume a month has 30 days
+        /** All the earning speed values. Note: we assume a month has 30 days */
         static getSpeedAll(speedMonth) {
           return {
             speedSecond: speedMonth / (30 * 24 * 60 * 60),
@@ -90,16 +90,16 @@
           };
         }
 
-        // Money earned up to the start of the current month
+        /** Money earned up to the start of the current month */
         getEarnedStartMonth(monthsInt) {
           return this.gainUnit * ((monthsInt * (monthsInt - 1)) / 2);
         }
-        // Money earned during the current month
+        /** Money earned during the current month */
         getEarnedMonth(monthsInt, monthsDec) {
           return this.gainUnit * (monthsInt * monthsDec);
         }
 
-        // All the possible values
+        /** All the possible values */
         getAll(now = new Date(), addSpeedMonth = 0) {
           const monthsInt = this.getMonthsInt(now),
             monthsDec = PasvCalc.getMonthsDec(now);

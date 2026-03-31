@@ -188,6 +188,21 @@
       }
 
       class App {
+        static showModalMsg(msg = "") {
+          const modalMsg = document.getElementById("modalMsg"),
+            pMsg = document.getElementById("pMsg");
+
+          if (msg === "") {
+            modalMsg.classList.remove("is-active");
+            return;
+          }
+
+          pMsg.textContent = msg;
+          modalMsg.classList.add("is-active");
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
         static pasvCalc;
 
         static randSpeedOffset;
@@ -255,7 +270,7 @@
           divSpeedYear: (elem, data) =>
             this.setMajorMinor(elem, data.speedYear),
         };
-        static updateRulesByElem = null; // Populated in this.load()
+        static updateRulesByElem = null; // Populated in this.body_onload()
 
         ////////////////////////////////////////////////////////////////////////
 
@@ -287,10 +302,6 @@
         static setup() {
           let hash = window.location.hash;
           if (hash.startsWith("#")) hash = hash.substring(1);
-
-          //////////////////////////////////////////////////////////////////////
-
-          if (typeof this.pasvCalc !== "undefined" && hash === "") return;
 
           //////////////////////////////////////////////////////////////////////
 
@@ -385,7 +396,15 @@
 
         ////////////////////////////////////////////////////////////////////////
 
-        static load() {
+        static body_onload() {
+          window.addEventListener("error", (event) => {
+            this.showModalMsg(`ERROR: ${event.error}`);
+          });
+
+          window.addEventListener("unhandledrejection", (event) => {
+            this.showModalMsg(`ERROR: ${event.reason}`);
+          });
+
           this.setup();
 
           this.updateRulesByElem = new Map(
@@ -398,19 +417,32 @@
           this.update();
         }
 
-        static fullscreen() {
-          document.documentElement.requestFullscreen().catch((error) => {
-            alert("Error: " + error);
-          });
+        static body_onhashchange() {
+          let hash = window.location.hash;
+          if (hash.startsWith("#")) hash = hash.substring(1);
+
+          if (hash === "") return;
+
+          window.location.reload();
+        }
+
+        static body_ondblclick() {
+          this.showModalMsg("Entering fullscreen...");
+
+          (async () => {
+            await document.documentElement.requestFullscreen();
+
+            this.showModalMsg();
+          })();
         }
       }
     </script>
   </head>
 
   <body
-    onload="App.load()"
-    ondblclick="App.fullscreen()"
-    onhashchange="App.setup()"
+    onload="App.body_onload()"
+    onhashchange="App.body_onhashchange()"
+    ondblclick="App.body_ondblclick()"
   >
     <section class="section">
       <div class="container">
@@ -598,5 +630,14 @@
         </div>
       </div>
     </section>
+
+    <div id="modalMsg" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <p id="pMsg"></p>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

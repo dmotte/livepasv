@@ -391,7 +391,7 @@
 
           // We need to use an arrow function here, otherwise "this"
           // would be undefined inside the function
-          this.timer = setTimeout(() => App.update(), this.updateMillis);
+          this.timer = setTimeout(() => this.update(), this.updateMillis);
         }
 
         ////////////////////////////////////////////////////////////////////////

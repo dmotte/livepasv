@@ -405,6 +405,10 @@
             this.showModalMsg(`ERROR: ${event.reason}`);
           });
 
+          // Show the page body only when loaded, to prevent
+          // the user from interacting early
+          document.body.hidden = false;
+
           this.setup();
 
           this.updateRulesByElem = new Map(
@@ -439,6 +443,7 @@
   </head>
 
   <body
+    hidden
     onload="App.body_onload()"
     onhashchange="App.body_onhashchange()"
     ondblclick="App.body_ondblclick()"
